@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100%;
+        }
+      }
+
+      h1 {
+        font-size: 36px;
+        margin-bottom: 40px;
+      }
+
+      .input-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .input-section input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .input-section input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 20px;
+      }
+
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      .verify-button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TensorFlow User Group Kolkata</h1>
+      <h2>Ticket Verification System</h2>
+      <h3>Developed by Rishiraj Acharya</h3>
+      <div class="input-section">
+        <input type="file" id="fileInput" accept=".csv" />
+        <input type="submit" value="Upload" onclick="processFile()" />
+      </div>
+      <div class="input-section">
+        <input type="email" id="emailInput" placeholder="Enter email" />
+        <input type="submit" value="Verify" onclick="verifyEmail()" />
+      </div>
+      <div class="result">
+        <p id="result"></p>
+      </div>
+    </div>
+  </body>
+  <script>
+    let csvData = [];
+
+    function processFile() {
+      const input = document.querySelector("#fileInput");
+      const reader = new FileReader();
+
+      reader.onload = function() {
+        csvData = reader.result
+          .split("\n")
+          .map(row => row.split(","))
+          .slice(1);
+        console.log("CSV data:", csvData);
+      };
+
+      reader.readAsText(input.files[0]);
+    }
+
+    function verifyEmail() {
+      const email = document.querySelector("#emailInput").value;
+      const resultDiv = document.querySelector("#result");
+
+      let found = false;
+      let name = "";
+      let status = "";
+      for (const data of csvData) {
+        if (data[0] === email) {
+          found = true;
+          name = data[1];
+          status = data[2];
+          break;
+        }
+      }
+
+      if (found) {
+        if (status === "Verified") {
+          resultDiv.innerHTML = "Already Verified!";
+        } else {
+          resultDiv.innerHTML = `Email found! Name: ${name} <button class="verify-button" onclick="markVerified('${email}')">Mark as Verified</button>`;
+        }
+      } else {
+        resultDiv.innerHTML = "Email not found!";
+      }
+    }
+
+    function markVerified(email) {
+      for (const data of csvData) {
+        if (data[0] === email) {
+          data[2] = "Verified";
+          break;
+        }
+      }
+
+      console.log("Updated CSV data:", csvData);
+    }
+  </script>
+</html>
