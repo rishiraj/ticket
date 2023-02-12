@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Meetup Page Clone</title>
+  <style>
+    /* Add your CSS styles here */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      font-size: 36px;
+      margin: 0;
+    }
+    
+    .header button {
+      background-color: #1B76F3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .event-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .event-card {
+      width: calc(33.33% - 20px);
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin: 10px;
+      overflow: hidden;
+      text-align: center;
+      position: relative;
+    }
+    
+    .event-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .event-card h2 {
+      font-size: 24px;
+      margin: 20px;
+    }
+    
+    .event-card p {
+      font-size: 16px;
+      color: grey;
+      margin: 20px;
+    }
+    
+    .event-card .attendance {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #1B76F3;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Meetup Page Clone</h1>
+      <button id="createEventBtn">Create Event</button>
+    </div>
+    <div class="event-list">
+      <!-- Add event cards here -->
+      <div class="event-card">
+        <img src="https://picsum.photos/300/200" alt="Event Image">
+        <h2>Event Title</h2>
+        <p>Event Date & Time</p>
+        <p>Event Location</p>
+        <p class="attendance">200 attendees</p>
+      </div>
+      <!-- Repeat the above code for multiple events -->
+    </div>
+  </div>
+
+  <script>
+    const createEventBtn = document.getElementById('createEventBtn');
+    createEventBtn.addEventListener('click', function() {
+      const eventTitle = prompt("Enter the event title:");
+      const eventDate = prompt("Enter the event date (MM/DD/YYYY):");
+      const eventTime = prompt("Enter the event time (HH:MM AM/PM):");
+      const eventLocation = prompt("Enter the event location:");
+      const eventAttendees = prompt("Enter the estimated number of attendees:");
+  
+      if (!eventTitle || !eventDate || !eventTime || !eventLocation || !eventAttendees) {
+        alert("All fields are required to create an event.");
+        return;
+      }
+  
+      const eventCard = document.createElement('div');
+      eventCard.classList.add('event-card');
+  
+      const eventImage = document.createElement('img');
+      eventImage.src = 'https://picsum.photos/300/200';
+      eventImage.alt = eventTitle + ' Image';
+      eventCard.appendChild(eventImage);
+  
+      const eventTitleEl = document.createElement('h2');
+      eventTitleEl.textContent = eventTitle;
+      eventCard.appendChild(eventTitleEl);
+  
+      const eventDateEl = document.createElement('p');
+      eventDateEl.textContent = eventDate + ' at ' + eventTime;
+      eventCard.appendChild(eventDateEl);
+  
+      const eventLocationEl = document.createElement('p');
+      eventLocationEl.textContent = eventLocation;
+      eventCard.appendChild(eventLocationEl);
+  
+      const eventAttendeesEl = document.createElement('p');
+      eventAttendeesEl.classList.add('attendance');
+      eventAttendeesEl.textContent = eventAttendees + ' attendees';
+      eventCard.appendChild(eventAttendeesEl);
+  
+      const eventList = document.querySelector('.event-list');
+      eventList.appendChild(eventCard);
+    });
+  </script>
+</body>
+</html>
